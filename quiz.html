@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #quiz {
+            text-align: left;
+        }
+
+        .question {
+            margin: 10px 0;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Quiz</h1>
+        <div id="quiz">
+            <!-- Quiz questions will be injected here -->
+        </div>
+        <button id="submit">Submit Answers</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "What is the capital of France?",
+                options: ["Paris", "London", "Berlin", "Madrid"],
+                answer: "Paris"
+            },
+            {
+                question: "What is 2 + 2?",
+                options: ["3", "4", "5", "6"],
+                answer: "4"
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: ["Earth", "Mars", "Jupiter", "Saturn"],
+                answer: "Mars"
+            }
+        ];
+
+        function loadQuiz() {
+            const quizContainer = document.getElementById('quiz');
+            quizContainer.innerHTML = quizData.map((item, index) => `
+                <div class="question">
+                    <p>${index + 1}. ${item.question}</p>
+                    ${item.options.map((option, i) => `
+                        <label>
+                            <input type="radio" name="question${index}" value="${option}">
+                            ${option}
+                        </label><br>
+                    `).join('')}
+                </div>
+            `).join('');
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            quizData.forEach((item, index) => {
+                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+                if (selectedOption && selectedOption.value === item.answer) {
+                    score++;
+                }
+            });
+            const resultContainer = document.getElementById('result');
+            resultContainer.textContent = `You scored ${score} out of ${quizData.length}`;
+        }
+
+        document.getElementById('submit').addEventListener('click', submitQuiz);
+
+        window.onload = loadQuiz;
+    </script>
+</body>
+</html>
